@@ -1,7 +1,9 @@
 import {
     BaseEntity,
-    Column, Entity, PrimaryGeneratedColumn
+    Column, Entity, PrimaryGeneratedColumn, OneToMany
 } from "typeorm";
+import { Question } from '../question/index.model';
+import { Comment } from '../comment/index.model';
 import { USER } from "../../config/tables";
 
 @Entity(USER)
@@ -19,9 +21,9 @@ export class User extends BaseEntity {
     @Column()
     public Email: string;
 
-    @Column()
-    public Quesions: boolean;
+    @OneToMany(type => Question, question => question.User)
+    public Questions: Question[];
 
-    @Column()
-    public Comments: number;
+    @OneToMany(type => Comment, comment => comment.User)
+    public Comments: Comment[];
 }

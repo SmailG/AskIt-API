@@ -1,8 +1,10 @@
 import {
     BaseEntity,
-    Column, Entity, PrimaryGeneratedColumn
+    Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany
 } from "typeorm";
 import { QUESTION } from "../../config/tables";
+import { Comment } from "../comment/index.model";
+import { User } from "../user/index.model";
 
 @Entity(QUESTION)
 export class Question extends BaseEntity {
@@ -10,21 +12,21 @@ export class Question extends BaseEntity {
     @PrimaryGeneratedColumn("increment")
     public QuestionId?: number;
 
-    @Column()
-    public Comments: string;
+    @OneToMany(type => Comment, comment => comment.Question)
+    public Comments: Comment[];
 
     @Column()
-    public Title: boolean;
+    public Title: string;
 
     @Column()
     public Content: string;
 
     @Column()
-    public Likes: boolean;
+    public Likes: number;
 
     @Column()
     public Dislikes: number;
 
-    @Column()
-    public User: number;
+    @ManyToOne(type => User, user => user.Questions )
+    public User: User;
 }
