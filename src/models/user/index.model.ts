@@ -1,29 +1,29 @@
 import {
     BaseEntity,
-    Column, Entity, PrimaryGeneratedColumn, OneToMany
+    Column, Entity, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
-import { Question } from '../question/index.model';
-import { Comment } from '../comment/index.model';
 import { USER } from "../../config/tables";
+import { Comment } from "../comment/index.model";
+import { Question } from "../question/index.model";
 
 @Entity(USER)
 export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn("increment")
-    public UserID?: number;
+    public userId?: number;
 
     @Column()
-    public Username: string;
+    public userName: string;
 
     @Column()
-    public Password: string;
+    public password: string;
 
     @Column()
-    public Email: string;
+    public email: string;
 
-    @OneToMany(type => Question, question => question.User)
-    public Questions: Question[];
+    @OneToMany((type) => Question, (question) => question.user)
+    public questions: Question[];
 
-    @OneToMany(type => Comment, comment => comment.User)
-    public Comments: Comment[];
+    @OneToMany((type) => Comment, (comment) => comment.user)
+    public comments: Comment[];
 }

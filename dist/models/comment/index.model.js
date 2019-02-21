@@ -11,36 +11,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const tables_1 = require("../../config/tables");
+const index_model_1 = require("../question/index.model");
+const index_model_2 = require("../user/index.model");
 let Comment = class Comment extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn("increment"),
     __metadata("design:type", Number)
-], Comment.prototype, "CommentId", void 0);
+], Comment.prototype, "commentId", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => index_model_1.Question, (question) => question.comments),
+    __metadata("design:type", index_model_1.Question)
+], Comment.prototype, "question", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], Comment.prototype, "Question", void 0);
-__decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Boolean)
-], Comment.prototype, "Title", void 0);
+], Comment.prototype, "title", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], Comment.prototype, "Content", void 0);
-__decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Boolean)
-], Comment.prototype, "Likes", void 0);
+], Comment.prototype, "content", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", Number)
-], Comment.prototype, "Dislikes", void 0);
+], Comment.prototype, "likes", void 0);
 __decorate([
     typeorm_1.Column(),
-    __metadata("design:type", String)
-], Comment.prototype, "User", void 0);
+    __metadata("design:type", Number)
+], Comment.prototype, "dislikes", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.comments),
+    __metadata("design:type", index_model_2.User)
+], Comment.prototype, "user", void 0);
 Comment = __decorate([
     typeorm_1.Entity(tables_1.COMMENT)
 ], Comment);

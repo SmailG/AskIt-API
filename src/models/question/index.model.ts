@@ -1,6 +1,6 @@
 import {
     BaseEntity,
-    Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany
+    Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
 import { QUESTION } from "../../config/tables";
 import { Comment } from "../comment/index.model";
@@ -10,23 +10,23 @@ import { User } from "../user/index.model";
 export class Question extends BaseEntity {
 
     @PrimaryGeneratedColumn("increment")
-    public QuestionId?: number;
+    public questionId?: number;
 
-    @OneToMany(type => Comment, comment => comment.Question)
-    public Comments: Comment[];
-
-    @Column()
-    public Title: string;
+    @OneToMany((type) => Comment, (comment) => comment.question)
+    public comments: Comment[];
 
     @Column()
-    public Content: string;
+    public title: string;
 
     @Column()
-    public Likes: number;
+    public content: string;
 
     @Column()
-    public Dislikes: number;
+    public likes: number;
 
-    @ManyToOne(type => User, user => user.Questions )
-    public User: User;
+    @Column()
+    public dislikes: number;
+
+    @ManyToOne((type) => User, (user) => user.questions )
+    public user: User;
 }

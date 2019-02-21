@@ -7,9 +7,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = require("jsonwebtoken");
+const jsonwebtoken_2 = __importDefault(require("jsonwebtoken"));
+const index_model_1 = require("../models/user/index.model");
 const index_services_1 = require("../models/user/index.services");
+exports.logInUser = (user) => __awaiter(this, void 0, void 0, function* () {
+    if (!user.userName || !user.password) {
+        return { status: 400, send: { error: "Credentials not provided" } };
+    }
+    const foundUser = yield index_model_1.User.findOne({ where: { userName: user.userName } });
+    if (!foundUser) {
+        return {
+            status: 400,
+            error: "There is no user with this username"
+        };
+    }
+    else {
+        const valid = yield bcrypt_1.default.compare(user.password, foundUser.password);
+        if (!valid) {
+            return {
+                status: 400,
+                error: "Invalid password"
+            };
+        }
+        else {
+            return {
+                status: 200,
+                send: { user: foundUser, token: jsonwebtoken_2.default.sign({ userName: foundUser.userName, id: foundUser.userId }, "penguin") }
+            };
+        }
+    }
+});
 exports.tokenValidation = (req, res, next) => {
     if (!req.headers.authorization) {
         return res.status(403).json({ error: "No credentials sent!" });

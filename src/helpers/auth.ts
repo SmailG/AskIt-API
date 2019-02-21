@@ -1,7 +1,37 @@
+import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import { decode, sign, verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { User } from "../models/user/index.model";
 import { UserService } from "../models/user/index.services";
+
+export const logInUser = async (user: User) => {
+    if (!user.userName || !user.password) {
+    return { status: 400, send: { error: "Credentials not provided" }};
+    }
+
+    const foundUser = await User.findOne({ where: { userName: user.userName } });
+    if (!foundUser) {
+        return {
+            status: 400,
+            error:  "There is no user with this username"
+        };
+    } else {
+        const valid: any = await bcrypt.compare(user.password, foundUser.password);
+        if (!valid) {
+            return {
+                status: 400,
+                error: "Invalid password"
+            };
+        } else {
+            return {
+                status: 200,
+                send: { user: foundUser, token: jwt.sign({ userName: foundUser.userName, id: foundUser.userId}, "penguin") }
+            };
+        }
+    }
+
+};
 
 export const tokenValidation = (req: Request, res: Response, next: NextFunction) => {
     if (!req.headers.authorization) {

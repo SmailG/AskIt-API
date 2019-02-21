@@ -11,32 +11,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const tables_1 = require("../../config/tables");
+const index_model_1 = require("../comment/index.model");
+const index_model_2 = require("../question/index.model");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn("increment"),
     __metadata("design:type", Number)
-], User.prototype, "UserID", void 0);
+], User.prototype, "userId", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "Username", void 0);
+], User.prototype, "userName", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "Password", void 0);
+], User.prototype, "password", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "Email", void 0);
+], User.prototype, "email", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Boolean)
-], User.prototype, "Quesions", void 0);
+    typeorm_1.OneToMany((type) => index_model_2.Question, (question) => question.user),
+    __metadata("design:type", Array)
+], User.prototype, "questions", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Number)
-], User.prototype, "Comments", void 0);
+    typeorm_1.OneToMany((type) => index_model_1.Comment, (comment) => comment.user),
+    __metadata("design:type", Array)
+], User.prototype, "comments", void 0);
 User = __decorate([
     typeorm_1.Entity(tables_1.USER)
 ], User);

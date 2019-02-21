@@ -1,32 +1,32 @@
 import {
     BaseEntity,
-    Column, Entity, PrimaryGeneratedColumn, ManyToOne
+    Column, Entity, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
 import { COMMENT } from "../../config/tables";
-import { User } from "../user/index.model";
 import { Question } from "../question/index.model";
+import { User } from "../user/index.model";
 
 @Entity(COMMENT)
 export class Comment extends BaseEntity {
 
     @PrimaryGeneratedColumn("increment")
-    public CommentId?: number;
+    public commentId?: number;
 
-    @ManyToOne(type => Question, question => question.Comments)
-    public Question: Question;
-
-    @Column()
-    public Title: string;
+    @ManyToOne((type) => Question, (question) => question.comments)
+    public question: Question;
 
     @Column()
-    public Content: string;
+    public title: string;
 
     @Column()
-    public Likes: number;
+    public content: string;
 
     @Column()
-    public Dislikes: number;
+    public likes: number;
 
-    @ManyToOne(type => User, user => user.Comments)
-    public User: User;
+    @Column()
+    public dislikes: number;
+
+    @ManyToOne((type) => User, (user) => user.comments)
+    public user: User;
 }

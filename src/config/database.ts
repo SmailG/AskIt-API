@@ -8,7 +8,8 @@ export const DevelopmentORMConfig: ConnectionOptions = {
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     entities: dbModels,
-    extra: { options: { encrypt: true } }
+    extra: { options: { encrypt: true } },
+    synchronize: true
 };
 
 export const connection = createConnection(DevelopmentORMConfig);

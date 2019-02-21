@@ -25,7 +25,7 @@ class CommentService {
      */
     static getComments() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield index_model_1.Comment.find({ select: ["Question", "Title", "Content"] });
+            return yield index_model_1.Comment.find({ select: ["question", "title", "content"] });
         });
     }
     /**
@@ -65,7 +65,7 @@ class CommentService {
     static update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const comment = yield index_model_1.Comment.findOne({ CommentId: id });
+                const comment = yield index_model_1.Comment.findOne({ commentId: id });
                 Object.keys(data).forEach((key) => {
                     if (key !== "CommentId") {
                         comment[key] = data[key];
@@ -85,7 +85,7 @@ class CommentService {
     static remove(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const comment = yield index_model_1.Comment.findOne({ CommentId: id });
+                const comment = yield index_model_1.Comment.findOne({ commentId: id });
                 return yield index_model_1.Comment.remove(comment);
             }
             catch (e) {

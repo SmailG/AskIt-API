@@ -19,7 +19,7 @@ export class CommentService {
      */
     public static async getComments(): Promise<Comment[]> {
 
-        return await Comment.find({ select: ["Question", "Title", "Content"] });
+        return await Comment.find({ select: ["question", "title", "content"] });
     }
 
     /**
@@ -58,7 +58,7 @@ export class CommentService {
     public static async update(id: number, data: any): Promise<any> {
 
         try {
-            const comment: Comment = await Comment.findOne({ CommentId: id });
+            const comment: Comment = await Comment.findOne({ commentId: id });
             Object.keys(data).forEach((key) => {
                 if (key !== "CommentId") {
                     (comment as any)[key] = data[key];
@@ -78,7 +78,7 @@ export class CommentService {
     public static async remove(id: number): Promise<any> {
 
         try {
-            const comment = await Comment.findOne({ CommentId: id });
+            const comment = await Comment.findOne({ commentId: id });
             return await Comment.remove(comment);
         } catch (e) {
             return e;

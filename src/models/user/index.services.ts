@@ -19,7 +19,7 @@ export class UserService {
      */
     public static async getUsers(): Promise<User[]> {
 
-        return await User.find({ select: ["Email", "UserID", "Username"] });
+        return await User.find({ select: ["email", "userId", "userName"] });
     }
 
     /**
@@ -58,7 +58,7 @@ export class UserService {
     public static async update(id: number, data: any): Promise<any> {
 
         try {
-            const user: User = await User.findOne({ UserID: id });
+            const user: User = await User.findOne({ userId: id });
             Object.keys(data).forEach((key) => {
                 if (key !== "userID") {
                     (user as any)[key] = data[key];
@@ -78,7 +78,7 @@ export class UserService {
     public static async remove(id: number): Promise<any> {
 
         try {
-            const user = await User.findOne({ UserID: id });
+            const user = await User.findOne({ userId: id });
             return await User.remove(user);
         } catch (e) {
             return e;

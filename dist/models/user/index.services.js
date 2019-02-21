@@ -25,7 +25,7 @@ class UserService {
      */
     static getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield index_model_1.User.find({ select: ["Email", "UserID", "Username"] });
+            return yield index_model_1.User.find({ select: ["email", "userId", "userName"] });
         });
     }
     /**
@@ -65,7 +65,7 @@ class UserService {
     static update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield index_model_1.User.findOne({ UserID: id });
+                const user = yield index_model_1.User.findOne({ userId: id });
                 Object.keys(data).forEach((key) => {
                     if (key !== "userID") {
                         user[key] = data[key];
@@ -85,7 +85,7 @@ class UserService {
     static remove(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield index_model_1.User.findOne({ UserID: id });
+                const user = yield index_model_1.User.findOne({ userId: id });
                 return yield index_model_1.User.remove(user);
             }
             catch (e) {

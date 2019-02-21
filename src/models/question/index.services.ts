@@ -19,7 +19,7 @@ export class QuestionService {
      */
     public static async getQuestions(): Promise<Question[]> {
 
-        return await Question.find({ select: ["User", "Title", "Content"] });
+        return await Question.find({ select: ["user", "title", "content"] });
     }
 
     /**
@@ -58,7 +58,7 @@ export class QuestionService {
     public static async update(id: number, data: any): Promise<Question> {
 
         try {
-            const question: Question = await Question.findOne({ QuestionId: id });
+            const question: Question = await Question.findOne({ questionId: id });
             Object.keys(data).forEach((key) => {
                 if (key !== "QuestionId") {
                     (question as any)[key] = data[key];
@@ -78,7 +78,7 @@ export class QuestionService {
     public static async remove(id: number): Promise<any> {
 
         try {
-            const question = await Question.findOne({ QuestionId: id });
+            const question = await Question.findOne({ questionId: id });
             return await Question.remove(question);
         } catch (e) {
             return e;

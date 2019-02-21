@@ -9,7 +9,8 @@ exports.DevelopmentORMConfig = {
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     entities: models_1.dbModels,
-    extra: { options: { encrypt: true } }
+    extra: { options: { encrypt: true } },
+    synchronize: true
 };
 exports.connection = typeorm_1.createConnection(exports.DevelopmentORMConfig);
 //# sourceMappingURL=database.js.map

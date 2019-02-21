@@ -25,7 +25,7 @@ class QuestionService {
      */
     static getQuestions() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield index_model_1.Question.find({ select: ["User", "Title", "Content"] });
+            return yield index_model_1.Question.find({ select: ["user", "title", "content"] });
         });
     }
     /**
@@ -65,7 +65,7 @@ class QuestionService {
     static update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const question = yield index_model_1.Question.findOne({ QuestionId: id });
+                const question = yield index_model_1.Question.findOne({ questionId: id });
                 Object.keys(data).forEach((key) => {
                     if (key !== "QuestionId") {
                         question[key] = data[key];
@@ -85,7 +85,7 @@ class QuestionService {
     static remove(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const question = yield index_model_1.Question.findOne({ QuestionId: id });
+                const question = yield index_model_1.Question.findOne({ questionId: id });
                 return yield index_model_1.Question.remove(question);
             }
             catch (e) {
