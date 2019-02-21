@@ -31,13 +31,13 @@ app.use(cors());
 const auth = require("./routes/auth/index");
 const user = require("./routes/user/index");
 const question = require("./routes/question/index");
-const comment = require("./routes/comment/index");
+const answer = require("./routes/answer/index");
 
 app.use("/api/v1/", auth);
 app.use("/api/v1/", user);
 app.use(tokenValidation);
 app.use("/api/v1/", question);
-app.use("/api/v1/", comment);
+app.use("/api/v1/", answer);
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {

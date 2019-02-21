@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const tables_1 = require("../../config/tables");
-const index_model_1 = require("../comment/index.model");
+const index_model_1 = require("../answer/index.model");
 const index_model_2 = require("../user/index.model");
 let Question = class Question extends typeorm_1.BaseEntity {
 };
@@ -20,9 +20,9 @@ __decorate([
     __metadata("design:type", Number)
 ], Question.prototype, "questionId", void 0);
 __decorate([
-    typeorm_1.OneToMany((type) => index_model_1.Comment, (comment) => comment.question),
+    typeorm_1.OneToMany((type) => index_model_1.Answer, (answer) => answer.question),
     __metadata("design:type", Array)
-], Question.prototype, "comments", void 0);
+], Question.prototype, "answers", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)

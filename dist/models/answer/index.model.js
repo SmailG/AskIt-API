@@ -11,36 +11,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const tables_1 = require("../../config/tables");
-const index_model_1 = require("../answer/index.model");
-const index_model_2 = require("../question/index.model");
-let User = class User extends typeorm_1.BaseEntity {
+const index_model_1 = require("../question/index.model");
+const index_model_2 = require("../user/index.model");
+let Answer = class Answer extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn("increment"),
     __metadata("design:type", Number)
-], User.prototype, "userId", void 0);
+], Answer.prototype, "answerId", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => index_model_1.Question, (question) => question.answers),
+    __metadata("design:type", index_model_1.Question)
+], Answer.prototype, "question", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "userName", void 0);
+], Answer.prototype, "title", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], Answer.prototype, "content", void 0);
 __decorate([
     typeorm_1.Column(),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
+    __metadata("design:type", Number)
+], Answer.prototype, "likes", void 0);
 __decorate([
-    typeorm_1.OneToMany((type) => index_model_2.Question, (question) => question.user),
-    __metadata("design:type", Array)
-], User.prototype, "questions", void 0);
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Answer.prototype, "dislikes", void 0);
 __decorate([
-    typeorm_1.OneToMany((type) => index_model_1.Answer, (answer) => answer.user),
-    __metadata("design:type", Array)
-], User.prototype, "answers", void 0);
-User = __decorate([
-    typeorm_1.Entity(tables_1.USER)
-], User);
-exports.User = User;
+    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.answers),
+    __metadata("design:type", index_model_2.User)
+], Answer.prototype, "user", void 0);
+Answer = __decorate([
+    typeorm_1.Entity(tables_1.ANSWER)
+], Answer);
+exports.Answer = Answer;
 //# sourceMappingURL=index.model.js.map

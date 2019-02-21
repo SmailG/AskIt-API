@@ -3,7 +3,7 @@ import {
     Column, Entity, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
 import { USER } from "../../config/tables";
-import { Comment } from "../comment/index.model";
+import { Answer } from "../answer/index.model";
 import { Question } from "../question/index.model";
 
 @Entity(USER)
@@ -24,6 +24,6 @@ export class User extends BaseEntity {
     @OneToMany((type) => Question, (question) => question.user)
     public questions: Question[];
 
-    @OneToMany((type) => Comment, (comment) => comment.user)
-    public comments: Comment[];
+    @OneToMany((type) => Answer, (answer) => answer.user)
+    public answers: Answer[];
 }

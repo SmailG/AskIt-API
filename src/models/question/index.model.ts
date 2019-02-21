@@ -3,7 +3,7 @@ import {
     Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
 import { QUESTION } from "../../config/tables";
-import { Comment } from "../comment/index.model";
+import { Answer } from "../answer/index.model";
 import { User } from "../user/index.model";
 
 @Entity(QUESTION)
@@ -12,8 +12,8 @@ export class Question extends BaseEntity {
     @PrimaryGeneratedColumn("increment")
     public questionId?: number;
 
-    @OneToMany((type) => Comment, (comment) => comment.question)
-    public comments: Comment[];
+    @OneToMany((type) => Answer, (answer) => answer.question)
+    public answers: Answer[];
 
     @Column()
     public title: string;
