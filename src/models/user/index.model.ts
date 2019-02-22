@@ -1,6 +1,6 @@
 import {
     BaseEntity,
-    Column, Entity, OneToMany, PrimaryGeneratedColumn
+    Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
 import { USER } from "../../config/tables";
 import { Answer } from "../answer/index.model";
@@ -26,4 +26,17 @@ export class User extends BaseEntity {
 
     @OneToMany((type) => Answer, (answer) => answer.user)
     public answers: Answer[];
+
+    @ManyToMany((type) => Answer, (answer) => answer.upvoters)
+    public upvotedAnswers: Answer[];
+
+    @ManyToMany((type) => Answer, (answer) => answer.downvoters)
+    public downvotedAnswers: Answer[];
+
+    @ManyToMany((type) => Question, (question) => question.upvoters)
+    public upvotedQuestions: Question[];
+
+    @ManyToMany((type) => Question, (question) => question.downvoters)
+    public downvotedQuestions: Question[];
+
 }

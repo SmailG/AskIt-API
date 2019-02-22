@@ -1,6 +1,6 @@
 import {
     BaseEntity,
-    Column, Entity, ManyToOne, PrimaryGeneratedColumn
+    Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
 import { ANSWER } from "../../config/tables";
 import { Question } from "../question/index.model";
@@ -21,11 +21,13 @@ export class Answer extends BaseEntity {
     @Column()
     public content: string;
 
-    @Column()
-    public likes: number;
+    @ManyToMany((type) => User, (user) => user.upvotedAnswers, { eager: true })
+    @JoinTable()
+    public upvoters: User[];
 
-    @Column()
-    public dislikes: number;
+    @ManyToMany((type) => User, (user) => user.downvotedAnswers, { eager: true })
+    @JoinTable()
+    public downvoters: User[];
 
     @ManyToOne((type) => User, (user) => user.answers)
     public user: User;

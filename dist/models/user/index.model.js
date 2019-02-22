@@ -39,6 +39,22 @@ __decorate([
     typeorm_1.OneToMany((type) => index_model_1.Answer, (answer) => answer.user),
     __metadata("design:type", Array)
 ], User.prototype, "answers", void 0);
+__decorate([
+    typeorm_1.ManyToMany((type) => index_model_1.Answer, (answer) => answer.upvoters),
+    __metadata("design:type", Array)
+], User.prototype, "upvotedAnswers", void 0);
+__decorate([
+    typeorm_1.ManyToMany((type) => index_model_1.Answer, (answer) => answer.downvoters),
+    __metadata("design:type", Array)
+], User.prototype, "downvotedAnswers", void 0);
+__decorate([
+    typeorm_1.ManyToMany((type) => index_model_2.Question, (question) => question.upvoters),
+    __metadata("design:type", Array)
+], User.prototype, "upvotedQuestions", void 0);
+__decorate([
+    typeorm_1.ManyToMany((type) => index_model_2.Question, (question) => question.downvoters),
+    __metadata("design:type", Array)
+], User.prototype, "downvotedQuestions", void 0);
 User = __decorate([
     typeorm_1.Entity(tables_1.USER)
 ], User);

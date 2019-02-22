@@ -32,13 +32,15 @@ __decorate([
     __metadata("design:type", String)
 ], Answer.prototype, "content", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Number)
-], Answer.prototype, "likes", void 0);
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.upvotedAnswers, { eager: true }),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", Array)
+], Answer.prototype, "upvoters", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", Number)
-], Answer.prototype, "dislikes", void 0);
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.downvotedAnswers, { eager: true }),
+    typeorm_1.JoinTable(),
+    __metadata("design:type", Array)
+], Answer.prototype, "downvoters", void 0);
 __decorate([
     typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.answers),
     __metadata("design:type", index_model_2.User)
