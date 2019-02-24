@@ -32,7 +32,6 @@ const user = require("./routes/user/index");
 const question = require("./routes/question/index");
 const answer = require("./routes/answer/index");
 app.use("/api/v1/", auth);
-// app.use(tokenValidation);
 app.use("/api/v1/", user);
 app.use("/api/v1/", question);
 app.use("/api/v1/", answer);
