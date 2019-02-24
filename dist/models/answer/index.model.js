@@ -20,29 +20,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Answer.prototype, "answerId", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => index_model_1.Question, (question) => question.answers),
+    typeorm_1.ManyToOne((type) => index_model_1.Question, (question) => question.answers, { nullable: false }),
     __metadata("design:type", index_model_1.Question)
 ], Answer.prototype, "question", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", String)
-], Answer.prototype, "title", void 0);
-__decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column({ length: "200" }),
     __metadata("design:type", String)
 ], Answer.prototype, "content", void 0);
 __decorate([
-    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.upvotedAnswers, { eager: true }),
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.upvotedAnswers),
     typeorm_1.JoinTable(),
     __metadata("design:type", Array)
 ], Answer.prototype, "upvoters", void 0);
 __decorate([
-    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.downvotedAnswers, { eager: true }),
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.downvotedAnswers),
     typeorm_1.JoinTable(),
     __metadata("design:type", Array)
 ], Answer.prototype, "downvoters", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.answers),
+    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.answers, { nullable: false }),
     __metadata("design:type", index_model_2.User)
 ], Answer.prototype, "user", void 0);
 Answer = __decorate([

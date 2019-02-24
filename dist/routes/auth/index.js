@@ -13,19 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const auth_1 = require("../../helpers/auth");
+const index_services_1 = require("../../models/user/index.services");
 const router = express_1.default.Router();
 /**
  *
  */
 router.post("/auth/login", (req, res) => __awaiter(this, void 0, void 0, function* () {
-    // if (!user.userName || !user.password)
-    // res.status(400).send({ error: 'Credentials not provided' });
-    console.log(req.body.user, "User login procedure");
     let result;
     try {
-        result = yield auth_1.logInUser(req.body.user);
+        result = yield auth_1.logInUser(req.body);
     }
     catch (error) {
+        console.log("error: ", error);
         res.status(400).json({ error: "An error occurred" });
     }
     res.status(result.status).json(result.send);
@@ -34,14 +33,15 @@ router.post("/auth/login", (req, res) => __awaiter(this, void 0, void 0, functio
  *
  */
 router.post("/auth/register", (req, res) => __awaiter(this, void 0, void 0, function* () {
-    // const code = req.body.code;
-    // let token;
-    // try {
-    //     token = await getTokenFromCode(code);
-    // } catch (error) {
-    //     res.status(400).json({ error: 'An error occurred' });
-    // }
-    // res.status(200).json(token);
+    let result;
+    try {
+        result = yield index_services_1.UserService.create(req.body);
+    }
+    catch (error) {
+        console.log("error: ", error);
+        res.status(400).json({ error: "An error occurred" });
+    }
+    res.status(200).json(result);
 }));
 /**
  *

@@ -14,7 +14,7 @@ connection.then( (conn: any) => {
 }).catch((error: any) => console.log(error));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    // FIX ME - shouldn't be any obviously
+    // FIX ME - shouldn't be any
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -35,14 +35,8 @@ const answer = require("./routes/answer/index");
 
 app.use("/api/v1/", auth);
 app.use("/api/v1/", user);
-app.use(tokenValidation);
 app.use("/api/v1/", question);
 app.use("/api/v1/", answer);
-
-// define a route handler for the default home page
-app.get( "/", ( req, res ) => {
-    res.send( "Hello world!" );
-});
 
 // start the Express server
 app.listen({

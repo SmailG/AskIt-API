@@ -7,7 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const index_model_1 = require("./index.model");
 class UserService {
     /**
@@ -50,16 +54,48 @@ class UserService {
      */
     static create(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (data.password) {
+                data.password = yield bcrypt_1.default.hash(data.password, 10);
+            }
+            console.log(data);
             try {
                 return yield index_model_1.User.save(data);
             }
             catch (e) {
-                return;
+                console.log(e);
+                throw e;
             }
         });
     }
     /**
-     * Update customer
+     * Change user password
+     * @returns {Promise<User>}
+     */
+    static changePassword(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield index_model_1.User.findOne({ where: { email: data.email } });
+                if (!user) {
+                    return { status: 400, send: "There is no user with this email" };
+                }
+                else {
+                    const valid = yield bcrypt_1.default.compare(data.oldPassword, user.password);
+                    if (!valid) {
+                        return { status: 400, send: "Old password is not correct" };
+                    }
+                    user.password = yield bcrypt_1.default.hash(data.newPassword, 10);
+                    const res = yield user.save();
+                    delete res.password;
+                    return { status: 200, send: res };
+                }
+            }
+            catch (e) {
+                throw e;
+            }
+        });
+    }
+    /**
+     * Update user
      * @returns {Promise<User>}
      */
     static update(id, data) {
@@ -74,7 +110,7 @@ class UserService {
                 return yield index_model_1.User.save(user);
             }
             catch (e) {
-                return e;
+                throw e;
             }
         });
     }
@@ -89,7 +125,7 @@ class UserService {
                 return yield index_model_1.User.remove(user);
             }
             catch (e) {
-                return e;
+                throw e;
             }
         });
     }

@@ -5,34 +5,41 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user/index.model";
 import { UserService } from "../models/user/index.services";
 
+/**
+ *
+ */
 export const logInUser = async (user: User) => {
     if (!user.userName || !user.password) {
-    return { status: 400, send: { error: "Credentials not provided" }};
+    return { status: 400, send: { error: "Username/password not provided" }};
     }
 
     const foundUser = await User.findOne({ where: { userName: user.userName } });
     if (!foundUser) {
         return {
             status: 400,
-            error:  "There is no user with this username"
+            send:  "There is no user with this username"
         };
     } else {
         const valid: any = await bcrypt.compare(user.password, foundUser.password);
         if (!valid) {
             return {
                 status: 400,
-                error: "Invalid password"
+                send: "Invalid password"
             };
         } else {
+            delete foundUser.password;
             return {
                 status: 200,
-                send: { user: foundUser, token: jwt.sign({ userName: foundUser.userName, id: foundUser.userId}, "penguin") }
+                send: { user: foundUser, token: jwt.sign({ userName: foundUser.userName, id: foundUser.userId}, process.env.SECRET_KEY) }
             };
         }
     }
 
 };
 
+/**
+ *
+ */
 export const tokenValidation = (req: Request, res: Response, next: NextFunction) => {
     if (!req.headers.authorization) {
         return res.status(403).json({error: "No credentials sent!"});
@@ -43,7 +50,6 @@ export const tokenValidation = (req: Request, res: Response, next: NextFunction)
             if (err) {
                 return res.status(403).json({error: "Invalid credentials"});
             }
-
             if (await validateAccess(req.originalUrl, decoded.id)) {
                 res.locals.user = decoded;
                 next();
@@ -54,12 +60,16 @@ export const tokenValidation = (req: Request, res: Response, next: NextFunction)
     }
 };
 
+/**
+ *
+ */
 async function validateAccess(route: string, userID: number): Promise<boolean> {
     return await UserService.findOneBy(userID, "userID").then(async (response: User) => {
-        // console.log('The userID contains the following information');
-        // console.log(userID);
         if (!response) { return false; }
-
         return true;
     });
 }
+
+/**
+ *
+ */

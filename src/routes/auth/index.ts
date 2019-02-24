@@ -1,7 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
 import { logInUser } from "../../helpers/auth";
-import { User } from "../../models/user/index.model";
+import { UserService } from "../../models/user/index.services";
 
 const router = express.Router();
 
@@ -9,14 +9,11 @@ const router = express.Router();
  *
  */
 router.post("/auth/login", async (req: Request, res: Response) => {
-    // if (!user.userName || !user.password)
-    // res.status(400).send({ error: 'Credentials not provided' });
-
-    console.log(req.body.user, "User login procedure");
     let result;
     try {
-        result = await logInUser(req.body.user);
+        result = await logInUser(req.body);
     } catch (error) {
+        console.log("error: ", error);
         res.status(400).json({ error: "An error occurred" });
     }
 
@@ -27,15 +24,15 @@ router.post("/auth/login", async (req: Request, res: Response) => {
  *
  */
 router.post("/auth/register", async (req: Request, res: Response) => {
-    // const code = req.body.code;
-    // let token;
-    // try {
-    //     token = await getTokenFromCode(code);
-    // } catch (error) {
-    //     res.status(400).json({ error: 'An error occurred' });
+    let result;
+    try {
+        result = await UserService.create(req.body);
+    } catch (error) {
+        console.log("error: ", error);
+        res.status(400).json({ error: "An error occurred" });
 
-    // }
-    // res.status(200).json(token);
+    }
+    res.status(200).json(result);
 });
 
 /**

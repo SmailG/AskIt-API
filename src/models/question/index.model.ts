@@ -13,22 +13,19 @@ export class Question extends BaseEntity {
     public questionId?: number;
 
     @OneToMany((type) => Answer, (answer) => answer.question)
-    public answers: Answer[];
+    public answers?: Answer[];
 
-    @Column()
-    public title: string;
-
-    @Column()
+    @Column({ length: "80" })
     public content: string;
 
-    @ManyToMany((type) => User, (user) => user.upvotedQuestions, { eager: true })
+    @ManyToMany((type) => User, (user) => user.upvotedQuestions)
     @JoinTable()
-    public upvoters: User[];
+    public upvoters?: User[];
 
-    @ManyToMany((type) => User, (user) => user.downvotedQuestions, { eager: true })
+    @ManyToMany((type) => User, (user) => user.downvotedQuestions)
     @JoinTable()
-    public downvoters: User[];
+    public downvoters?: User[];
 
-    @ManyToOne((type) => User, (user) => user.questions )
+    @ManyToOne((type) => User, (user) => user.questions, { nullable: false } )
     public user: User;
 }

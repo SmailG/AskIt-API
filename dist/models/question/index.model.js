@@ -24,25 +24,21 @@ __decorate([
     __metadata("design:type", Array)
 ], Question.prototype, "answers", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", String)
-], Question.prototype, "title", void 0);
-__decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column({ length: "80" }),
     __metadata("design:type", String)
 ], Question.prototype, "content", void 0);
 __decorate([
-    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.upvotedQuestions, { eager: true }),
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.upvotedQuestions),
     typeorm_1.JoinTable(),
     __metadata("design:type", Array)
 ], Question.prototype, "upvoters", void 0);
 __decorate([
-    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.downvotedQuestions, { eager: true }),
+    typeorm_1.ManyToMany((type) => index_model_2.User, (user) => user.downvotedQuestions),
     typeorm_1.JoinTable(),
     __metadata("design:type", Array)
 ], Question.prototype, "downvoters", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.questions),
+    typeorm_1.ManyToOne((type) => index_model_2.User, (user) => user.questions, { nullable: false }),
     __metadata("design:type", index_model_2.User)
 ], Question.prototype, "user", void 0);
 Question = __decorate([

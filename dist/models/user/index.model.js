@@ -56,7 +56,9 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "downvotedQuestions", void 0);
 User = __decorate([
-    typeorm_1.Entity(tables_1.USER)
+    typeorm_1.Entity(tables_1.USER),
+    typeorm_1.Unique(["email"]),
+    typeorm_1.Unique(["userName"])
 ], User);
 exports.User = User;
 //# sourceMappingURL=index.model.js.map

@@ -1,7 +1,7 @@
+import bcrypt from "bcrypt";
 import { getConnection } from "typeorm";
 import { error } from "util";
 import { User } from "./index.model";
-
 export class UserService {
 
     /**
@@ -43,16 +43,46 @@ export class UserService {
      * @returns {Promise<User>}
      */
     public static async create(data: any): Promise<any> {
-
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, 10);
+        }
+        console.log(data);
         try {
             return await User.save(data);
         } catch (e) {
-            return;
+            console.log(e);
+            throw e;
         }
     }
 
     /**
-     * Update customer
+     * Change user password
+     * @returns {Promise<User>}
+     */
+    public static async changePassword(data: any): Promise<any> {
+        try {
+            const user: User = await User.findOne({ where: { email: data.email } });
+            if (!user) {
+                return {status: 400, send: "There is no user with this email"};
+            } else {
+                const valid: any = await bcrypt.compare( data.oldPassword, user.password);
+                if (!valid) {
+                    return { status: 400, send: "Old password is not correct" };
+                }
+
+                user.password = await bcrypt.hash(data.newPassword, 10);
+                const res = await user.save();
+                delete res.password;
+
+                return { status: 200, send: res };
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Update user
      * @returns {Promise<User>}
      */
     public static async update(id: number, data: any): Promise<any> {
@@ -67,7 +97,7 @@ export class UserService {
 
             return await User.save(user);
         } catch (e) {
-            return e;
+            throw e;
         }
     }
 
@@ -81,7 +111,7 @@ export class UserService {
             const user = await User.findOne({ userId: id });
             return await User.remove(user);
         } catch (e) {
-            return e;
+            throw e;
         }
     }
 }

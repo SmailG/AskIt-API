@@ -9,14 +9,13 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 require("reflect-metadata");
 const database_1 = require("./config/database");
-const auth_1 = require("./helpers/auth");
 const app = express_1.default();
 const port = 1337;
 database_1.connection.then((conn) => {
     console.log(`connected: ${conn.isConnected}`);
 }).catch((error) => console.log(error));
 app.use((req, res, next) => {
-    // FIX ME - shouldn't be any obviously
+    // FIX ME - shouldn't be any
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -33,14 +32,10 @@ const user = require("./routes/user/index");
 const question = require("./routes/question/index");
 const answer = require("./routes/answer/index");
 app.use("/api/v1/", auth);
+// app.use(tokenValidation);
 app.use("/api/v1/", user);
-app.use(auth_1.tokenValidation);
 app.use("/api/v1/", question);
 app.use("/api/v1/", answer);
-// define a route handler for the default home page
-app.get("/", (req, res) => {
-    res.send("Hello world!");
-});
 // start the Express server
 app.listen({
     port: process.env.PORT || 3333,

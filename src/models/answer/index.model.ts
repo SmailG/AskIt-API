@@ -12,23 +12,20 @@ export class Answer extends BaseEntity {
     @PrimaryGeneratedColumn("increment")
     public answerId?: number;
 
-    @ManyToOne((type) => Question, (question) => question.answers)
+    @ManyToOne((type) => Question, (question) => question.answers, { nullable: false })
     public question: Question;
 
-    @Column()
-    public title: string;
-
-    @Column()
+    @Column({ length: "200" })
     public content: string;
 
-    @ManyToMany((type) => User, (user) => user.upvotedAnswers, { eager: true })
+    @ManyToMany((type) => User, (user) => user.upvotedAnswers)
     @JoinTable()
-    public upvoters: User[];
+    public upvoters?: User[];
 
-    @ManyToMany((type) => User, (user) => user.downvotedAnswers, { eager: true })
+    @ManyToMany((type) => User, (user) => user.downvotedAnswers)
     @JoinTable()
-    public downvoters: User[];
+    public downvoters?: User[];
 
-    @ManyToOne((type) => User, (user) => user.answers)
+    @ManyToOne((type) => User, (user) => user.answers, { nullable: false })
     public user: User;
 }

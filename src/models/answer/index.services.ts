@@ -1,5 +1,7 @@
-import { getConnection } from "typeorm";
+import { getConnection, getRepository } from "typeorm";
 import { error } from "util";
+import { Question } from "../question/index.model";
+import { User } from "../user/index.model";
 import { Answer } from "./index.model";
 
 export class AnswerService {
@@ -17,25 +19,33 @@ export class AnswerService {
      * Get list of answers
      * @returns {Promise<Answer[]>}
      */
-    public static async getAnswers(): Promise<Answer[]> {
+    public static async getAnswers(questionId: any): Promise<Answer[]> {
+        if (!questionId || !Question.find(questionId)) { throw new Error("Specified question is not valid"); }
+        try {
+            // return await Answer.find({ where: { question: questionId } });
+            return await getRepository(Answer).createQueryBuilder("answer")
+            .select(["answer.answerId", "answer.content", "up.userId", "down.userId"])
+            .leftJoin("answer.upvoters", "up")
+            .leftJoin("answer.downvoters", "down")
+            .where("answer.question = :questionId", { questionId })
+            .getMany();
 
-        return await Answer.find({ select: ["question", "title", "content"] });
+        } catch (e) {
+            throw e;
+        }
     }
 
     /**
      * Get one answer
      * @returns {Promise<Answer>}
      */
-    public static async findOneBy(param: any, type: string): Promise<Answer> {
+    public static async findOne(answerId: any): Promise<Answer> {
 
-        let query = {};
-        if (type === "email") {
-            query = { Email: param };
-        } else {
-            query = { answerId: param };
-        }
-
-        return await Answer.findOne(query);
+        return await getRepository(Answer).createQueryBuilder("answer")
+        .select(["answer.answerId", "answer.content, up.userId, down.userId"])
+        .leftJoinAndSelect("answer.upvoters", "up")
+        .leftJoinAndSelect("anwer.downvoters", "down")
+        .getOne();
     }
 
     /**
@@ -43,11 +53,11 @@ export class AnswerService {
      * @returns {Promise<Answer>}
      */
     public static async create(data: any): Promise<any> {
-
+        console.log(data, "data");
         try {
             return await Answer.save(data);
         } catch (e) {
-            return;
+            throw e;
         }
     }
 
@@ -60,7 +70,7 @@ export class AnswerService {
         try {
             const answer: Answer = await Answer.findOne({ answerId: id });
             Object.keys(data).forEach((key) => {
-                if (key !== "aommentId") {
+                if (key !== "answerId") {
                     (answer as any)[key] = data[key];
                 }
             });
@@ -68,6 +78,51 @@ export class AnswerService {
             return await Answer.save(answer);
         } catch (e) {
             return e;
+        }
+    }
+
+    /**
+     * Upvote/downvote answer
+     * @returns {Promise<Answer>}
+     */
+    public static async vote(answerId: number, userId: number, vote: string): Promise<Question> {
+
+        try {
+            const answer: Answer = await Answer.findOne({ where: { answerId }, relations: ["upvoters", "downvoters"] });
+            if (!answer) {
+                throw new Error("Answer with specified id not found");
+            }
+            const user: User = await User.findOne({ userId });
+            if (!user) {
+                throw new Error("User with specified id not found");
+            }
+
+            let shouldRemoveVote: boolean;
+            answer.downvoters.find((u, index) => {
+                if (u.userId === Number(userId)) {
+                    answer.downvoters.splice(index, 1);
+                    if (vote === "downvote") { shouldRemoveVote = true; }
+                    return true;
+                }
+            });
+
+            answer.upvoters.find((u, index) => {
+                if (u.userId === Number(userId)) {
+                    answer.upvoters.splice(index, 1);
+                    if (vote === "upvote") { shouldRemoveVote = true; }
+                    return true;
+                }
+            });
+
+            if (!shouldRemoveVote) {
+                vote === "upvote"
+                ? answer.upvoters.push(user)
+                : answer.downvoters.push(user);
+            }
+
+            return await Answer.save(answer);
+        } catch (e) {
+            throw e;
         }
     }
 

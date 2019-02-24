@@ -16,15 +16,18 @@ const jsonwebtoken_1 = require("jsonwebtoken");
 const jsonwebtoken_2 = __importDefault(require("jsonwebtoken"));
 const index_model_1 = require("../models/user/index.model");
 const index_services_1 = require("../models/user/index.services");
+/**
+ *
+ */
 exports.logInUser = (user) => __awaiter(this, void 0, void 0, function* () {
     if (!user.userName || !user.password) {
-        return { status: 400, send: { error: "Credentials not provided" } };
+        return { status: 400, send: { error: "Username/password not provided" } };
     }
     const foundUser = yield index_model_1.User.findOne({ where: { userName: user.userName } });
     if (!foundUser) {
         return {
             status: 400,
-            error: "There is no user with this username"
+            send: "There is no user with this username"
         };
     }
     else {
@@ -32,17 +35,21 @@ exports.logInUser = (user) => __awaiter(this, void 0, void 0, function* () {
         if (!valid) {
             return {
                 status: 400,
-                error: "Invalid password"
+                send: "Invalid password"
             };
         }
         else {
+            delete foundUser.password;
             return {
                 status: 200,
-                send: { user: foundUser, token: jsonwebtoken_2.default.sign({ userName: foundUser.userName, id: foundUser.userId }, "penguin") }
+                send: { user: foundUser, token: jsonwebtoken_2.default.sign({ userName: foundUser.userName, id: foundUser.userId }, process.env.SECRET_KEY) }
             };
         }
     }
 });
+/**
+ *
+ */
 exports.tokenValidation = (req, res, next) => {
     if (!req.headers.authorization) {
         return res.status(403).json({ error: "No credentials sent!" });
@@ -62,11 +69,12 @@ exports.tokenValidation = (req, res, next) => {
         }));
     }
 };
+/**
+ *
+ */
 function validateAccess(route, userID) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield index_services_1.UserService.findOneBy(userID, "userID").then((response) => __awaiter(this, void 0, void 0, function* () {
-            // console.log('The userID contains the following information');
-            // console.log(userID);
             if (!response) {
                 return false;
             }
@@ -74,4 +82,7 @@ function validateAccess(route, userID) {
         }));
     });
 }
+/**
+ *
+ */
 //# sourceMappingURL=auth.js.map
