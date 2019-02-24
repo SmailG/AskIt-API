@@ -49,15 +49,22 @@ export class QuestionService {
             .getMany();
         }
 
-        return await getRepository(Question).createQueryBuilder("question")
-        .select(["question.questionId", "question.content", "upvoters.userId", "downvoters.userId"])
-        .leftJoin("question.upvoters", "upvoters")
-        .leftJoin("question.downvoters", "downvoters")
-        .leftJoin("question.user", "u")
-        .leftJoin("question.answers", "answers")
-        .loadRelationCountAndMap("question.answerCount", "question.answers", "answerCount")
-        .where("question.questionId IN (:ids)", { ids: toFetch.map((q) => q.questionId) })
-        .getMany();
+        if (toFetch.length > 0) {
+            try {
+                return await getRepository(Question).createQueryBuilder("question")
+            .select(["question.questionId", "question.content", "upvoters.userId", "downvoters.userId"])
+            .leftJoin("question.upvoters", "upvoters")
+            .leftJoin("question.downvoters", "downvoters")
+            .leftJoin("question.user", "u")
+            .leftJoin("question.answers", "answers")
+            .loadRelationCountAndMap("question.answerCount", "question.answers", "answerCount")
+            .where("question.questionId IN (:ids)", { ids: toFetch.map((q) => q.questionId) })
+            .getMany();
+            } catch (e) {
+                throw e;
+            }
+        } else { throw new Error("No entries with selected ids"); }
+
     }
 
     /**

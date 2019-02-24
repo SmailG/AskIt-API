@@ -23,8 +23,8 @@ router.get("/question/getQuestions", (req, res) => __awaiter(this, void 0, void 
     try {
         result = yield index_services_1.QuestionService.getQuestions(req.query.offset, req.query.take, req.query.criteria);
     }
-    catch (error) {
-        console.log("error: ", error);
+    catch (e) {
+        console.log("error: ", e);
         res.status(400).json({ error: "An error occurred" });
     }
     res.status(200).json(result);

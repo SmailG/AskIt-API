@@ -12,8 +12,8 @@ router.get("/question/getQuestions", async (req: Request, res: Response) => {
     let result;
     try {
         result = await QuestionService.getQuestions(req.query.offset, req.query.take, req.query.criteria);
-    } catch (error) {
-        console.log("error: ", error);
+    } catch (e) {
+        console.log("error: ", e);
         res.status(400).json({ error: "An error occurred" });
     }
 
