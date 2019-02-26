@@ -19,7 +19,6 @@ export class QuestionService {
      * @returns {Promise<Question[]>}
      */
     public static async getQuestions(skip: any = 0, take: any = 20, criteria: string = "most-recent"): Promise<Question[]> {
-
         let toFetch;
         if (criteria === "most-recent") {
             toFetch = await getRepository(Question).createQueryBuilder("question")

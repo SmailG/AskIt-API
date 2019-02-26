@@ -38,6 +38,13 @@ app.use("/api/v1/", user);
 app.use("/api/v1/", question);
 app.use("/api/v1/", answer);
 
+app.use((req, res, next) => {
+    res.status(404);
+
+    res.send({ error: "Not found" });
+    return;
+  });
+
 // start the Express server
 app.listen({
     port: process.env.PORT || 3333,
