@@ -47,7 +47,7 @@ router.get("/answer/getAnswer", (req, res) => __awaiter(this, void 0, void 0, fu
 /**
  *
  */
-router.post("/answer/create", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.post("/answer", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.AnswerService.create(req.body);
@@ -61,7 +61,7 @@ router.post("/answer/create", auth_1.tokenValidation, (req, res) => __awaiter(th
 /**
  *
  */
-router.post("/answer/update", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.post("/answer", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.AnswerService.update(req.body.id, req.body.data);
@@ -89,7 +89,7 @@ router.put("/answer/vote", auth_1.tokenValidation, (req, res) => __awaiter(this,
 /**
  *
  */
-router.post("/answer/delete", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.delete("/answer", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.AnswerService.remove(req.body);

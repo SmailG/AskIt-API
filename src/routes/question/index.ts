@@ -38,7 +38,7 @@ router.get("/question/getUserQuestions", tokenValidation, async (req: Request, r
 /**
  *
  */
-router.get("/question/getQuestion", async (req: Request, res: Response) => {
+router.get("/question", async (req: Request, res: Response) => {
     let result;
     try {
         result = await QuestionService.findOne(req.query.id);
@@ -53,7 +53,7 @@ router.get("/question/getQuestion", async (req: Request, res: Response) => {
 /**
  *
  */
-router.post("/question/create", tokenValidation, async (req: Request, res: Response) => {
+router.post("/question", tokenValidation, async (req: Request, res: Response) => {
     let result;
     console.log(req.body, "body");
     try {
@@ -69,7 +69,7 @@ router.post("/question/create", tokenValidation, async (req: Request, res: Respo
 /**
  *
  */
-router.post("/question/update", tokenValidation, async (req: Request, res: Response) => {
+router.post("/question", tokenValidation, async (req: Request, res: Response) => {
     let result;
     try {
         result = await QuestionService.update(req.body.id, req.body.data);
@@ -99,7 +99,7 @@ router.put("/question/vote", tokenValidation, async (req: Request, res: Response
 /**
  *
  */
-router.post("/question/delete", tokenValidation, async (req: Request, res: Response) => {
+router.delete("/question", tokenValidation, async (req: Request, res: Response) => {
     let result;
     try {
         result = await QuestionService.remove(req.body);

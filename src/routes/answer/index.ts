@@ -38,7 +38,7 @@ router.get("/answer/getAnswer", async (req: Request, res: Response) => {
 /**
  *
  */
-router.post("/answer/create", tokenValidation, async (req: Request, res: Response) => {
+router.post("/answer", tokenValidation, async (req: Request, res: Response) => {
     let result;
     try {
         result = await AnswerService.create(req.body);
@@ -53,7 +53,7 @@ router.post("/answer/create", tokenValidation, async (req: Request, res: Respons
 /**
  *
  */
-router.post("/answer/update", tokenValidation, async (req: Request, res: Response) => {
+router.post("/answer", tokenValidation, async (req: Request, res: Response) => {
     let result;
     try {
         result = await AnswerService.update(req.body.id, req.body.data);
@@ -83,7 +83,7 @@ router.put("/answer/vote", tokenValidation, async (req: Request, res: Response) 
 /**
  *
  */
-router.post("/answer/delete", tokenValidation, async (req: Request, res: Response) => {
+router.delete("/answer", tokenValidation, async (req: Request, res: Response) => {
     let result;
     try {
         result = await AnswerService.remove(req.body);

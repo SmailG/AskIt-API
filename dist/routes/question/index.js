@@ -46,7 +46,7 @@ router.get("/question/getUserQuestions", auth_1.tokenValidation, (req, res) => _
 /**
  *
  */
-router.get("/question/getQuestion", (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.get("/question", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.QuestionService.findOne(req.query.id);
@@ -60,7 +60,7 @@ router.get("/question/getQuestion", (req, res) => __awaiter(this, void 0, void 0
 /**
  *
  */
-router.post("/question/create", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.post("/question", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     console.log(req.body, "body");
     try {
@@ -75,7 +75,7 @@ router.post("/question/create", auth_1.tokenValidation, (req, res) => __awaiter(
 /**
  *
  */
-router.post("/question/update", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.post("/question", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.QuestionService.update(req.body.id, req.body.data);
@@ -103,7 +103,7 @@ router.put("/question/vote", auth_1.tokenValidation, (req, res) => __awaiter(thi
 /**
  *
  */
-router.post("/question/delete", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
+router.delete("/question", auth_1.tokenValidation, (req, res) => __awaiter(this, void 0, void 0, function* () {
     let result;
     try {
         result = yield index_services_1.QuestionService.remove(req.body);
