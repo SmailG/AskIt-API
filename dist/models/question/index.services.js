@@ -112,13 +112,19 @@ class QuestionService {
     static findOne(questionId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield typeorm_1.getRepository(index_model_2.Question).createQueryBuilder("question")
+                const res = yield typeorm_1.getRepository(index_model_2.Question).createQueryBuilder("question")
                     .select(["question.questionId", "question.content", "down.userId", "up.userId"])
                     .leftJoinAndSelect("question.answers", "a")
                     .leftJoin("question.upvoters", "up")
                     .leftJoin("question.downvoters", "down")
                     .where("question.questionId = :questionId", { questionId })
                     .getOne();
+                if (res) {
+                    return res;
+                }
+                else {
+                    throw new Error("No question with that id");
+                }
             }
             catch (e) {
                 throw e;

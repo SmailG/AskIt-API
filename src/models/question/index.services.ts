@@ -97,14 +97,19 @@ export class QuestionService {
      */
     public static async findOne(questionId: any): Promise<Question> {
         try {
-
-            return await getRepository(Question).createQueryBuilder("question")
+            const res = await getRepository(Question).createQueryBuilder("question")
         .select(["question.questionId", "question.content", "down.userId", "up.userId"])
         .leftJoinAndSelect("question.answers", "a")
         .leftJoin("question.upvoters", "up")
         .leftJoin("question.downvoters", "down")
         .where("question.questionId = :questionId", { questionId })
         .getOne();
+
+            if (res) {
+                 return res;
+                } else {
+                throw new Error("No question with that id");
+                }
 
         } catch (e) {
             throw e;

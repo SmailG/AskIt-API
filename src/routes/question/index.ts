@@ -44,8 +44,9 @@ router.get("/question", async (req: Request, res: Response) => {
         result = await QuestionService.findOne(req.query.id);
     } catch (error) {
         console.log("error: ", error);
-        res.status(400).json({ error: "An error occurred", message: error });
+        res.status(400).json({ error: "An error occurred" });
     }
+    
 
     res.status(200).json(result);
 });

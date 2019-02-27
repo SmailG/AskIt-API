@@ -53,8 +53,9 @@ router.get("/question", (req, res) => __awaiter(this, void 0, void 0, function* 
     }
     catch (error) {
         console.log("error: ", error);
-        res.status(400).json({ error: "An error occurred", message: error });
+        res.status(400).json({ error: "An error occurred" });
     }
+    console.log("ENTER3", result);
     res.status(200).json(result);
 }));
 /**
